@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>The Gloucester on Yonge - Suite Entry Notice Generator</title>
     <style>
-        /* General Styles */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body {
@@ -14,7 +13,7 @@
             margin: 0;
             padding: 10px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
@@ -86,20 +85,13 @@
             margin-top: 20px;
         }
 
-        .notice-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
         .notice-content {
             border: 2px solid #000;
             padding: 15px;
-            margin: 10px;
+            display: inline-block;
             text-align: center;
             width: 100%;
             box-sizing: border-box;
-            page-break-inside: avoid;
         }
 
         .notice-content h2 {
@@ -142,125 +134,84 @@
             background-color: #1e7e34;
         }
 
+        /* Adjusted notice container to center content */
+        .notice-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* Print Styles */
         @media print {
-            @page {
-                size: A4;
-                margin: 10mm;
-            }
-
             body * {
                 visibility: hidden;
             }
 
             #noticePrintArea {
-                display: block !important;
+                display: block !important; /* Ensure the print area is displayed */
+            }
+
+            .print-thermal #noticePrintArea, .print-thermal #noticePrintArea * {
+                visibility: visible;
+            }
+
+            .print-thermal #noticePrintArea {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 80mm;
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-a4-1 #noticePrintArea, .print-a4-1 #noticePrintArea * {
+                visibility: visible;
+            }
+
+            .print-a4-2 #noticePrintArea, .print-a4-2 #noticePrintArea * {
+                visibility: visible;
+            }
+
+            .print-a4-4 #noticePrintArea, .print-a4-4 #noticePrintArea * {
+                visibility: visible;
+            }
+
+            .print-a4-1 #noticePrintArea, .print-a4-2 #noticePrintArea, .print-a4-4 #noticePrintArea {
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 margin: 0;
                 padding: 0;
-                visibility: visible;
-            }
-
-            #noticePrintArea * {
-                visibility: visible;
-            }
-
-            /* Scaling for different notices per page */
-            .print-a4-1 .notice-content {
-                transform: scale(1);
-                transform-origin: top left;
             }
 
             .print-a4-2 .notice-content {
                 width: 100%;
-                transform: scale(0.95);
-                transform-origin: top left;
-            }
-
-            .print-a4-2 .notice-content:nth-child(1) {
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-            .print-a4-2 .notice-content:nth-child(2) {
-                position: absolute;
-                bottom: 0;
-                left: 0;
+                height: 50%;
+                box-sizing: border-box;
             }
 
             .print-a4-4 .notice-content {
                 width: 50%;
+                height: 50%;
+                float: left;
                 box-sizing: border-box;
-                transform: scale(0.95);
-                transform-origin: top left;
-            }
-
-            .print-a4-4 .notice-content:nth-child(1) {
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-            .print-a4-4 .notice-content:nth-child(2) {
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
-
-            .print-a4-4 .notice-content:nth-child(3) {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-            }
-
-            .print-a4-4 .notice-content:nth-child(4) {
-                position: absolute;
-                bottom: 0;
-                right: 0;
-            }
-
-            .print-thermal .notice-content {
-                width: 80mm;
-                margin: 0 auto;
             }
 
             .action-buttons {
                 display: none;
             }
-        }
 
-        /* Preview Styles */
-        .preview-thermal .notice-content {
-            width: 80mm;
-        }
-
-        .preview-a4-1 .notice-grid {
-            flex-direction: column;
-        }
-
-        .preview-a4-2 .notice-content {
-            width: 100%;
-        }
-
-        .preview-a4-2 .notice-grid {
-            flex-direction: column;
-        }
-
-        .preview-a4-4 .notice-content {
-            width: calc(50% - 20px);
-        }
-
-        .preview-a4-4 .notice-grid {
-            flex-wrap: wrap;
+            /* Clear floats after notices */
+            .clearfix::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Suite Entry Notice Generator</h1>
     <div class="container">
         <!-- Form Section -->
         <div class="form-container">
@@ -331,11 +282,7 @@
 
         <!-- Notice Preview Section -->
         <div class="notice-container">
-            <div id="noticePreview" class="notice">
-                <div class="notice-grid">
-                    <!-- Notice content will be inserted here -->
-                </div>
-            </div>
+            <div id="noticePreview" class="notice"></div>
             <div class="action-buttons">
                 <button id="printNotice">Print Notice</button>
             </div>
@@ -366,20 +313,33 @@
             } else {
                 a4Options.style.display = 'none';
             }
-
-            updatePreview();
         });
 
-        // Handle notices per page selection
-        document.getElementById('noticesPerPage').addEventListener('change', updatePreview);
+        // Sample notice HTML
+        const sampleNotice = `
+            <div class="notice-content">
+                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
+                <h2>SUITE ENTRY NOTICE</h2>
+                <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
+                <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
+                <p><strong>Suite Number:</strong> _____</p>
+                <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
+                <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
+                <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
+                <p><strong>Options:</strong></p>
+                <p>☐ Work Completed</p>
+                <p>☐ Work Pending</p>
+                <p>☐ Please Contact Property Management</p>
+                <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
+            </div>
+        `;
 
-        // Initial sample notice content
-        let noticeHtmlContent = '';
+        // Display the sample notice on page load
+        document.getElementById('noticePreview').innerHTML = sampleNotice;
 
         document.getElementById('noticeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             generateNotice();
-            updatePreview();
         });
 
         function generateNotice() {
@@ -426,7 +386,7 @@
             const formattedDate = currentDate.toLocaleDateString();
             const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            noticeHtmlContent = `
+            const noticeHtmlContent = `
                 <div class="notice-content">
                     <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
                     <h2>SUITE ENTRY NOTICE</h2>
@@ -441,34 +401,8 @@
                     <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
                 </div>
             `;
-        }
 
-        // Function to update the preview based on selections
-        function updatePreview() {
-            const printerType = document.getElementById('printerType').value;
-            const noticesPerPage = document.getElementById('noticesPerPage').value || '1';
-
-            const noticePreview = document.getElementById('noticePreview');
-            const noticeGrid = noticePreview.querySelector('.notice-grid');
-            noticeGrid.innerHTML = '';
-            noticePreview.className = 'notice'; // Reset classes
-            noticePreview.classList.add(`preview-${printerType}`);
-            if (printerType === 'a4') {
-                noticePreview.classList.add(`preview-a4-${noticesPerPage}`);
-            }
-
-            if (!noticeHtmlContent) {
-                // Use sample notice if no content generated yet
-                generateNotice();
-            }
-
-            let noticesHtml = '';
-            const noticeCount = printerType === 'thermal' ? 1 : parseInt(noticesPerPage);
-            for (let i = 0; i < noticeCount; i++) {
-                noticesHtml += noticeHtmlContent;
-            }
-
-            noticeGrid.innerHTML = noticesHtml;
+            document.getElementById('noticePreview').innerHTML = noticeHtmlContent;
         }
 
         document.getElementById('printNotice').addEventListener('click', function () {
@@ -480,23 +414,34 @@
             const printerType = document.getElementById('printerType').value;
             const noticesPerPage = document.getElementById('noticesPerPage').value || '1';
 
-            const noticeContent = noticeHtmlContent;
+            const noticeContent = document.getElementById('noticePreview').innerHTML;
             const noticePrintArea = document.getElementById('noticePrintArea');
 
             noticePrintArea.innerHTML = '';
             document.body.classList.remove('print-thermal', 'print-a4-1', 'print-a4-2', 'print-a4-4');
-            document.body.classList.add(`print-${printerType}`);
-            if (printerType === 'a4') {
+
+            if (printerType === 'thermal') {
+                document.body.classList.add('print-thermal');
+                noticePrintArea.innerHTML = noticeContent;
+            } else {
                 document.body.classList.add(`print-a4-${noticesPerPage}`);
+                if (noticesPerPage === '1') {
+                    noticePrintArea.innerHTML = noticeContent;
+                } else if (noticesPerPage === '2') {
+                    noticePrintArea.innerHTML = `
+                        <div class="notice-content">${noticeContent}</div>
+                        <div class="notice-content">${noticeContent}</div>
+                    `;
+                } else if (noticesPerPage === '4') {
+                    noticePrintArea.innerHTML = `
+                        <div class="notice-content">${noticeContent}</div>
+                        <div class="notice-content">${noticeContent}</div>
+                        <div class="notice-content">${noticeContent}</div>
+                        <div class="notice-content">${noticeContent}</div>
+                        <div class="clearfix"></div>
+                    `;
+                }
             }
-
-            let noticesHtml = '';
-            const noticeCount = printerType === 'thermal' ? 1 : parseInt(noticesPerPage);
-            for (let i = 0; i < noticeCount; i++) {
-                noticesHtml += `<div class="notice-content">${noticeContent}</div>`;
-            }
-
-            noticePrintArea.innerHTML = noticesHtml;
 
             // Ensure the print area is visible before printing
             noticePrintArea.style.display = 'block';
@@ -506,9 +451,6 @@
         window.onafterprint = function() {
             document.getElementById('noticePrintArea').style.display = 'none';
         };
-
-        // Initialize the preview with default values
-        updatePreview();
     </script>
 </body>
 </html>
