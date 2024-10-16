@@ -147,6 +147,10 @@
                 visibility: hidden;
             }
 
+            #noticePrintArea {
+                display: block !important; /* Ensure the print area is displayed */
+            }
+
             .print-thermal #noticePrintArea, .print-thermal #noticePrintArea * {
                 visibility: visible;
             }
@@ -197,13 +201,13 @@
             .action-buttons {
                 display: none;
             }
-        }
 
-        /* Clear floats after notices */
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
+            /* Clear floats after notices */
+            .clearfix::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
         }
     </style>
 </head>
@@ -438,7 +442,15 @@
                     `;
                 }
             }
+
+            // Ensure the print area is visible before printing
+            noticePrintArea.style.display = 'block';
         }
+
+        // Hide the print area after printing
+        window.onafterprint = function() {
+            document.getElementById('noticePrintArea').style.display = 'none';
+        };
     </script>
 </body>
 </html>
