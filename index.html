@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>The Gloucester on Yonge - Suite Entry Notice Generator</title>
     <style>
+        /* General Styles */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body {
@@ -13,7 +14,7 @@
             margin: 0;
             padding: 10px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
@@ -85,10 +86,16 @@
             margin-top: 20px;
         }
 
+        .notice-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
         .notice-content {
             border: 2px solid #000;
             padding: 15px;
-            display: inline-block;
+            margin: 10px;
             text-align: center;
             width: 100%;
             box-sizing: border-box;
@@ -134,13 +141,6 @@
             background-color: #1e7e34;
         }
 
-        /* Adjusted notice container to center content */
-        .notice-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
         /* Print Styles */
         @media print {
             body * {
@@ -148,41 +148,29 @@
             }
 
             #noticePrintArea {
-                display: block !important; /* Ensure the print area is displayed */
-            }
-
-            .print-thermal #noticePrintArea, .print-thermal #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-thermal #noticePrintArea {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 80mm;
-                margin: 0;
-                padding: 0;
-            }
-
-            .print-a4-1 #noticePrintArea, .print-a4-1 #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-a4-2 #noticePrintArea, .print-a4-2 #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-a4-4 #noticePrintArea, .print-a4-4 #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-a4-1 #noticePrintArea, .print-a4-2 #noticePrintArea, .print-a4-4 #noticePrintArea {
+                display: block !important;
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 margin: 0;
                 padding: 0;
+            }
+
+            #noticePrintArea, #noticePrintArea * {
+                visibility: visible;
+            }
+
+            .print-thermal .notice-content {
+                width: 80mm;
+                margin: 0 auto;
+            }
+
+            .print-a4-1 .notice-content {
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+                page-break-after: always;
             }
 
             .print-a4-2 .notice-content {
@@ -198,20 +186,45 @@
                 box-sizing: border-box;
             }
 
+            .print-a4-4::after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
             .action-buttons {
                 display: none;
             }
+        }
 
-            /* Clear floats after notices */
-            .clearfix::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
+        /* Preview Styles */
+        .preview-thermal .notice-content {
+            width: 80mm;
+        }
+
+        .preview-a4-1 .notice-grid {
+            flex-direction: column;
+        }
+
+        .preview-a4-2 .notice-content {
+            width: 100%;
+        }
+
+        .preview-a4-2 .notice-grid {
+            flex-direction: column;
+        }
+
+        .preview-a4-4 .notice-content {
+            width: calc(50% - 20px);
+        }
+
+        .preview-a4-4 .notice-grid {
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
+    <h1>Suite Entry Notice Generator</h1>
     <div class="container">
         <!-- Form Section -->
         <div class="form-container">
@@ -282,7 +295,11 @@
 
         <!-- Notice Preview Section -->
         <div class="notice-container">
-            <div id="noticePreview" class="notice"></div>
+            <div id="noticePreview" class="notice">
+                <div class="notice-grid">
+                    <!-- Notice content will be inserted here -->
+                </div>
+            </div>
             <div class="action-buttons">
                 <button id="printNotice">Print Notice</button>
             </div>
@@ -313,33 +330,20 @@
             } else {
                 a4Options.style.display = 'none';
             }
+
+            updatePreview();
         });
 
-        // Sample notice HTML
-        const sampleNotice = `
-            <div class="notice-content">
-                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
-                <h2>SUITE ENTRY NOTICE</h2>
-                <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
-                <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
-                <p><strong>Suite Number:</strong> _____</p>
-                <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
-                <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
-                <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
-                <p><strong>Options:</strong></p>
-                <p>☐ Work Completed</p>
-                <p>☐ Work Pending</p>
-                <p>☐ Please Contact Property Management</p>
-                <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
-            </div>
-        `;
+        // Handle notices per page selection
+        document.getElementById('noticesPerPage').addEventListener('change', updatePreview);
 
-        // Display the sample notice on page load
-        document.getElementById('noticePreview').innerHTML = sampleNotice;
+        // Initial sample notice content
+        let noticeHtmlContent = '';
 
         document.getElementById('noticeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             generateNotice();
+            updatePreview();
         });
 
         function generateNotice() {
@@ -386,7 +390,7 @@
             const formattedDate = currentDate.toLocaleDateString();
             const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            const noticeHtmlContent = `
+            noticeHtmlContent = `
                 <div class="notice-content">
                     <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
                     <h2>SUITE ENTRY NOTICE</h2>
@@ -401,8 +405,44 @@
                     <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
                 </div>
             `;
+        }
 
-            document.getElementById('noticePreview').innerHTML = noticeHtmlContent;
+        // Function to update the preview based on selections
+        function updatePreview() {
+            const printerType = document.getElementById('printerType').value;
+            const noticesPerPage = document.getElementById('noticesPerPage').value || '1';
+
+            const noticePreview = document.getElementById('noticePreview');
+            const noticeGrid = noticePreview.querySelector('.notice-grid');
+            noticeGrid.innerHTML = '';
+            noticePreview.classList.remove('preview-thermal', 'preview-a4-1', 'preview-a4-2', 'preview-a4-4');
+
+            if (!noticeHtmlContent) {
+                // Use sample notice if no content generated yet
+                generateNotice();
+            }
+
+            if (printerType === 'thermal') {
+                noticePreview.classList.add('preview-thermal');
+                noticeGrid.innerHTML = noticeHtmlContent;
+            } else {
+                noticePreview.classList.add(`preview-a4-${noticesPerPage}`);
+                if (noticesPerPage === '1') {
+                    noticeGrid.innerHTML = noticeHtmlContent;
+                } else if (noticesPerPage === '2') {
+                    noticeGrid.innerHTML = `
+                        ${noticeHtmlContent}
+                        ${noticeHtmlContent}
+                    `;
+                } else if (noticesPerPage === '4') {
+                    noticeGrid.innerHTML = `
+                        ${noticeHtmlContent}
+                        ${noticeHtmlContent}
+                        ${noticeHtmlContent}
+                        ${noticeHtmlContent}
+                    `;
+                }
+            }
         }
 
         document.getElementById('printNotice').addEventListener('click', function () {
@@ -414,7 +454,7 @@
             const printerType = document.getElementById('printerType').value;
             const noticesPerPage = document.getElementById('noticesPerPage').value || '1';
 
-            const noticeContent = document.getElementById('noticePreview').innerHTML;
+            const noticeContent = noticeHtmlContent;
             const noticePrintArea = document.getElementById('noticePrintArea');
 
             noticePrintArea.innerHTML = '';
@@ -438,7 +478,6 @@
                         <div class="notice-content">${noticeContent}</div>
                         <div class="notice-content">${noticeContent}</div>
                         <div class="notice-content">${noticeContent}</div>
-                        <div class="clearfix"></div>
                     `;
                 }
             }
@@ -451,6 +490,9 @@
         window.onafterprint = function() {
             document.getElementById('noticePrintArea').style.display = 'none';
         };
+
+        // Initialize the preview with default values
+        updatePreview();
     </script>
 </body>
 </html>
