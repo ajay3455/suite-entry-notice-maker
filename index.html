@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Gloucester on Yonge - Suite Entry Notice Generator</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #e9efff, #f6d1e7);
+            background: linear-gradient(135deg, #fff4e6, #ffe8e8);
             color: #333;
             margin: 0;
             padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .container {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             width: 100%;
             max-width: 1100px;
@@ -31,19 +31,21 @@
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            width: 45%;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px auto;
         }
 
         h1 {
             text-align: center;
-            color: #34495e;
+            color: #8B0000;
             margin-bottom: 20px;
         }
 
         .gloucester-logo img {
             display: block;
-            margin: 0 auto;
-            width: 200px;
+            margin: 0 auto 10px auto;
+            width: 150px;
             height: auto;
         }
 
@@ -58,7 +60,7 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 12px;
-            border: 2px solid #a3c9f1;
+            border: 2px solid #f0b27a;
             border-radius: 6px;
             font-size: 16px;
         }
@@ -68,7 +70,7 @@
         }
 
         button {
-            background-color: #67b4e8;
+            background-color: #d35400;
             color: white;
             padding: 12px;
             border: none;
@@ -103,8 +105,13 @@
         }
 
         .logo-img {
-            width: 200px;
+            width: 150px;
             margin-bottom: 10px;
+        }
+
+        .lock-img {
+            width: 50px;
+            margin-bottom: 15px;
         }
 
         .action-buttons {
@@ -167,11 +174,11 @@
         <!-- Form Section -->
         <div class="form-container">
             <div class="gloucester-logo">
-                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester Logo">
+                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge">
             </div>
             <form id="noticeForm">
                 <label for="suiteNumber">Suite Number:</label>
-                <input type="text" id="suiteNumber" required>
+                <input type="text" id="suiteNumber" placeholder="e.g., 1205">
 
                 <label>Person(s) who entered the suite:</label>
                 <div class="checkbox-group">
@@ -195,7 +202,7 @@
                 <input type="text" id="otherPerson" placeholder="Specify other" style="display: none;">
 
                 <label for="entryPermission">Entry Type:</label>
-                <select id="entryPermission" required>
+                <select id="entryPermission">
                     <option value="">Select option</option>
                     <option value="Resident Permission">Resident Permission</option>
                     <option value="Emergency">Emergency</option>
@@ -203,7 +210,14 @@
                 </select>
 
                 <label for="natureOfVisit">Nature of Visit:</label>
-                <textarea id="natureOfVisit" rows="3" required></textarea>
+                <textarea id="natureOfVisit" rows="3" placeholder="Describe the nature of the visit..."></textarea>
+
+                <label>Options:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="options" value="Work Completed"> Work Completed</label>
+                    <label><input type="checkbox" name="options" value="Work Pending"> Work Pending</label>
+                    <label><input type="checkbox" name="options" value="Please Contact Property Management"> Please Contact Property Management</label>
+                </div>
 
                 <button type="submit">Generate Notice</button>
             </form>
@@ -225,23 +239,26 @@
                 const securitySelect = document.getElementById('securityGuardSelect');
 
                 otherInput.style.display = document.querySelector('input[name="personEntered"][value="Other"]').checked ? 'block' : 'none';
-                otherInput.required = document.querySelector('input[name="personEntered"][value="Other"]').checked;
 
                 securitySelect.style.display = document.querySelector('input[name="personEntered"][value="Security"]').checked ? 'block' : 'none';
-                securitySelect.required = document.querySelector('input[name="personEntered"][value="Security"]').checked;
             });
         });
 
         // Sample notice HTML
         const sampleNotice = `
             <div class="notice-content">
-                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester Logo" class="logo-img">
+                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
                 <h2>SUITE ENTRY NOTICE</h2>
+                <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
                 <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
                 <p><strong>Suite Number:</strong> _____</p>
                 <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
                 <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
                 <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
+                <p><strong>Options:</strong></p>
+                <p>☐ Work Completed</p>
+                <p>☐ Work Pending</p>
+                <p>☐ Please Contact Property Management</p>
                 <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
             </div>
         `;
@@ -255,26 +272,44 @@
         });
 
         function generateNotice() {
-            const suiteNumber = document.getElementById('suiteNumber').value.trim();
-            const personsEntered = Array.from(document.querySelectorAll('input[name="personEntered"]:checked'))
-                .map(checkbox => checkbox.value)
-                .filter(value => value !== 'Other' && value !== 'Security');
+            const suiteNumber = document.getElementById('suiteNumber').value.trim() || '_____';
+            const personsEnteredArray = Array.from(document.querySelectorAll('input[name="personEntered"]:checked'))
+                .map(checkbox => checkbox.value);
             const otherPerson = document.getElementById('otherPerson').value.trim();
             const securityGuard = document.getElementById('securityGuardSelect').value.trim();
-            const entryPermission = document.getElementById('entryPermission').value.trim();
-            const natureOfVisit = document.getElementById('natureOfVisit').value.trim();
+            const entryPermission = document.getElementById('entryPermission').value.trim() || '____________';
+            const natureOfVisit = document.getElementById('natureOfVisit').value.trim() || '____________';
 
-            if (document.querySelector('input[name="personEntered"][value="Other"]').checked && otherPerson) {
+            let personsEntered = [];
+            if (personsEnteredArray.includes('Other') && otherPerson) {
                 personsEntered.push(otherPerson);
+            } else if (personsEnteredArray.includes('Other')) {
+                personsEntered.push('____________');
             }
-            if (document.querySelector('input[name="personEntered"][value="Security"]').checked && securityGuard) {
+            if (personsEnteredArray.includes('Security') && securityGuard) {
                 personsEntered.push(`Security (${securityGuard})`);
+            } else if (personsEnteredArray.includes('Security')) {
+                personsEntered.push('Security (____________)');
+            }
+            personsEnteredArray.forEach(person => {
+                if (person !== 'Other' && person !== 'Security') {
+                    personsEntered.push(person);
+                }
+            });
+            if (personsEntered.length === 0) {
+                personsEntered.push('____________');
             }
 
-            if (!suiteNumber || personsEntered.length === 0 || !entryPermission || !natureOfVisit) {
-                alert('Please fill in all required fields.');
-                return;
-            }
+            const optionsSelected = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                .map(option => option.value);
+
+            const optionsHtml = ['Work Completed', 'Work Pending', 'Please Contact Property Management'].map(option => {
+                if (optionsSelected.includes(option)) {
+                    return `<p>☑ ${option}</p>`;
+                } else {
+                    return `<p>☐ ${option}</p>`;
+                }
+            }).join('');
 
             const currentDate = new Date();
             const formattedDate = currentDate.toLocaleDateString();
@@ -282,13 +317,16 @@
 
             const noticeHtml = `
                 <div class="notice-content">
-                    <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester Logo" class="logo-img">
+                    <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
                     <h2>SUITE ENTRY NOTICE</h2>
+                    <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
                     <p><strong>Date/Time:</strong> ${formattedDate} ${formattedTime}</p>
                     <p><strong>Suite Number:</strong> ${suiteNumber}</p>
                     <p><strong>Person(s) who entered:</strong> ${personsEntered.join(', ')}</p>
                     <p><strong>Entry Type:</strong> ${entryPermission}</p>
                     <p><strong>Nature of Visit:</strong> ${natureOfVisit}</p>
+                    <p><strong>Options:</strong></p>
+                    ${optionsHtml}
                     <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
                 </div>
             `;
