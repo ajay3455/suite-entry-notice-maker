@@ -2,43 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Gloucester on Yonge - Suite Entry Notice Generator</title>
+    <title>Suite Entry Notice - Thermal Printer</title>
     <style>
+        /* General Styles */
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #fff4e6, #ffe8e8);
+            background: linear-gradient(135deg, #e0f7fa, #e0f2f1); /* Light blue-green gradient */
             color: #333;
             margin: 0;
             padding: 10px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
 
         .container {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+            flex-direction: row;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1500px;
+            margin: 0 auto;
         }
 
-        .form-container, .notice-container {
+        .form-container, .sample-container, .notice-container {
             background-color: #ffffff;
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-            margin: 10px auto;
+            width: 32%;
+            margin: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .form-container {
+            order: 1;
+        }
+
+        .sample-container {
+            order: 2;
+        }
+
+        .notice-container {
+            order: 3;
         }
 
         h1 {
             text-align: center;
-            color: #8B0000;
+            color: #006064; /* Dark teal */
             margin-bottom: 20px;
         }
 
@@ -60,7 +75,7 @@
             width: 100%;
             padding: 10px;
             margin-bottom: 12px;
-            border: 2px solid #f0b27a;
+            border: 2px solid #4dd0e1; /* Light blue */
             border-radius: 6px;
             font-size: 16px;
         }
@@ -70,7 +85,7 @@
         }
 
         button {
-            background-color: #d35400;
+            background-color: #00838f; /* Teal */
             color: white;
             padding: 12px;
             border: none;
@@ -80,26 +95,26 @@
             width: 100%;
         }
 
-        .notice {
+        .notice, .sample {
             text-align: center;
             margin-top: 20px;
         }
 
-        .notice-content {
+        .notice-content, .sample-content {
             border: 2px solid #000;
             padding: 15px;
-            display: inline-block;
+            margin: 10px auto;
             text-align: center;
-            width: 100%;
+            width: 80mm;
             box-sizing: border-box;
         }
 
-        .notice-content h2 {
+        .notice-content h2, .sample-content h2 {
             font-size: 20px;
             margin-bottom: 15px;
         }
 
-        .notice-content p {
+        .notice-content p, .sample-content p {
             font-size: 16px;
             margin: 5px 0;
         }
@@ -122,23 +137,16 @@
 
         .action-buttons button {
             width: 100%;
-            background-color: #28a745;
+            background-color: #00796b; /* Darker teal */
             padding: 12px;
         }
 
         .action-buttons button:hover {
-            background-color: #218838;
+            background-color: #00695c;
         }
 
         .action-buttons button:active {
-            background-color: #1e7e34;
-        }
-
-        /* Adjusted notice container to center content */
-        .notice-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background-color: #004d40;
         }
 
         /* Print Styles */
@@ -148,14 +156,8 @@
             }
 
             #noticePrintArea {
-                display: block !important; /* Ensure the print area is displayed */
-            }
-
-            .print-thermal #noticePrintArea, .print-thermal #noticePrintArea * {
+                display: block !important;
                 visibility: visible;
-            }
-
-            .print-thermal #noticePrintArea {
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -164,54 +166,18 @@
                 padding: 0;
             }
 
-            .print-a4-1 #noticePrintArea, .print-a4-1 #noticePrintArea * {
+            #noticePrintArea * {
                 visibility: visible;
-            }
-
-            .print-a4-2 #noticePrintArea, .print-a4-2 #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-a4-4 #noticePrintArea, .print-a4-4 #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .print-a4-1 #noticePrintArea, .print-a4-2 #noticePrintArea, .print-a4-4 #noticePrintArea {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-            }
-
-            .print-a4-2 .notice-content {
-                width: 100%;
-                height: 50%;
-                box-sizing: border-box;
-            }
-
-            .print-a4-4 .notice-content {
-                width: 50%;
-                height: 50%;
-                float: left;
-                box-sizing: border-box;
             }
 
             .action-buttons {
                 display: none;
             }
-
-            /* Clear floats after notices */
-            .clearfix::after {
-                content: "";
-                clear: both;
-                display: table;
-            }
         }
     </style>
 </head>
 <body>
+    <h1>Suite Entry Notice Generator (Thermal Printer)</h1>
     <div class="container">
         <!-- Form Section -->
         <div class="form-container">
@@ -219,6 +185,7 @@
                 <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge">
             </div>
             <form id="noticeForm">
+                <!-- Form fields -->
                 <label for="suiteNumber">Suite Number:</label>
                 <input type="text" id="suiteNumber" placeholder="e.g., 1205">
 
@@ -261,28 +228,24 @@
                     <label><input type="checkbox" name="options" value="Please Contact Property Management"> Please Contact Property Management</label>
                 </div>
 
-                <label for="printerType">Printer Type:</label>
-                <select id="printerType">
-                    <option value="thermal">Thermal Printer</option>
-                    <option value="a4">Office Printer (A4)</option>
-                </select>
-
-                <div id="a4Options" style="display: none;">
-                    <label for="noticesPerPage">Notices per Page:</label>
-                    <select id="noticesPerPage">
-                        <option value="1">1 per page</option>
-                        <option value="2">2 per page</option>
-                        <option value="4">4 per page</option>
-                    </select>
-                </div>
-
                 <button type="submit">Generate Notice</button>
             </form>
         </div>
 
+        <!-- Sample Preview Section -->
+        <div class="sample-container">
+            <h2>Sample Preview</h2>
+            <div id="samplePreview" class="sample">
+                <!-- Sample content will be inserted here -->
+            </div>
+        </div>
+
         <!-- Notice Preview Section -->
         <div class="notice-container">
-            <div id="noticePreview" class="notice"></div>
+            <h2>Notice to Print</h2>
+            <div id="noticePreview" class="notice">
+                <!-- Notice content will be inserted here -->
+            </div>
             <div class="action-buttons">
                 <button id="printNotice">Print Notice</button>
             </div>
@@ -303,39 +266,30 @@
             });
         });
 
-        // Handle printer type selection
-        document.getElementById('printerType').addEventListener('change', function() {
-            const printerType = this.value;
-            const a4Options = document.getElementById('a4Options');
+        // Initial sample notice content
+        let noticeHtmlContent = '';
+        let sampleHtmlContent = '';
 
-            if (printerType === 'a4') {
-                a4Options.style.display = 'block';
-            } else {
-                a4Options.style.display = 'none';
-            }
-        });
-
-        // Sample notice HTML
-        const sampleNotice = `
-            <div class="notice-content">
-                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
-                <h2>SUITE ENTRY NOTICE</h2>
-                <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
-                <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
-                <p><strong>Suite Number:</strong> _____</p>
-                <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
-                <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
-                <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
-                <p><strong>Options:</strong></p>
-                <p>☐ Work Completed</p>
-                <p>☐ Work Pending</p>
-                <p>☐ Please Contact Property Management</p>
-                <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
-            </div>
-        `;
-
-        // Display the sample notice on page load
-        document.getElementById('noticePreview').innerHTML = sampleNotice;
+        function generateSample() {
+            sampleHtmlContent = `
+                <div class="sample-content">
+                    <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
+                    <h2>SUITE ENTRY NOTICE</h2>
+                    <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
+                    <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
+                    <p><strong>Suite Number:</strong> _____</p>
+                    <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
+                    <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
+                    <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
+                    <p><strong>Options:</strong></p>
+                    <p>☐ Work Completed</p>
+                    <p>☐ Work Pending</p>
+                    <p>☐ Please Contact Property Management</p>
+                    <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
+                </div>
+            `;
+            document.getElementById('samplePreview').innerHTML = sampleHtmlContent;
+        }
 
         document.getElementById('noticeForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -386,7 +340,7 @@
             const formattedDate = currentDate.toLocaleDateString();
             const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-            const noticeHtmlContent = `
+            noticeHtmlContent = `
                 <div class="notice-content">
                     <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
                     <h2>SUITE ENTRY NOTICE</h2>
@@ -411,37 +365,8 @@
         });
 
         function preparePrint() {
-            const printerType = document.getElementById('printerType').value;
-            const noticesPerPage = document.getElementById('noticesPerPage').value || '1';
-
-            const noticeContent = document.getElementById('noticePreview').innerHTML;
             const noticePrintArea = document.getElementById('noticePrintArea');
-
-            noticePrintArea.innerHTML = '';
-            document.body.classList.remove('print-thermal', 'print-a4-1', 'print-a4-2', 'print-a4-4');
-
-            if (printerType === 'thermal') {
-                document.body.classList.add('print-thermal');
-                noticePrintArea.innerHTML = noticeContent;
-            } else {
-                document.body.classList.add(`print-a4-${noticesPerPage}`);
-                if (noticesPerPage === '1') {
-                    noticePrintArea.innerHTML = noticeContent;
-                } else if (noticesPerPage === '2') {
-                    noticePrintArea.innerHTML = `
-                        <div class="notice-content">${noticeContent}</div>
-                        <div class="notice-content">${noticeContent}</div>
-                    `;
-                } else if (noticesPerPage === '4') {
-                    noticePrintArea.innerHTML = `
-                        <div class="notice-content">${noticeContent}</div>
-                        <div class="notice-content">${noticeContent}</div>
-                        <div class="notice-content">${noticeContent}</div>
-                        <div class="notice-content">${noticeContent}</div>
-                        <div class="clearfix"></div>
-                    `;
-                }
-            }
+            noticePrintArea.innerHTML = noticeHtmlContent;
 
             // Ensure the print area is visible before printing
             noticePrintArea.style.display = 'block';
@@ -451,6 +376,9 @@
         window.onafterprint = function() {
             document.getElementById('noticePrintArea').style.display = 'none';
         };
+
+        // Initialize with sample content
+        generateSample();
     </script>
 </body>
 </html>
