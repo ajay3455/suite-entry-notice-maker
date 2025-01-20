@@ -1,384 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Suite Entry Notice - Thermal Printer</title>
-    <style>
-        /* General Styles */
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  <meta charset="UTF-8">
+  <title>Suite Entry Notice - Thermal Printer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #e0f7fa, #e0f2f1); /* Light blue-green gradient */
-            color: #333;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #e0f2f1);
+      color: #333;
+      margin: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+    .form-container, .sample-container, .notice-container {
+      background-color: #ffffff;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      width: 32%;
+      margin: 10px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+    .form-container { order: 1; }
+    .sample-container { order: 2; }
+    .notice-container { order: 3; }
 
-        .container {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            max-width: 1500px;
-            margin: 0 auto;
-        }
+    h1 {
+      text-align: center;
+      color: #006064;
+      margin-bottom: 20px;
+    }
+    .gloucester-logo img {
+      display: block;
+      margin: 0 auto 10px auto;
+      width: 150px;
+      height: auto;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #555;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border: 2px solid #4dd0e1;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    button {
+      background-color: #00838f;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100%;
+    }
+    .notice, .sample {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .notice-content, .sample-content {
+      border: 2px solid #000;
+      padding: 15px;
+      margin: 10px auto;
+      text-align: center;
+      width: 80mm;
+      box-sizing: border-box;
+    }
+    .notice-content h2, .sample-content h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    .notice-content p, .sample-content p {
+      font-size: 16px;
+      margin: 5px 0;
+    }
+    .logo-img {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+    .lock-img {
+      width: 50px;
+      margin-bottom: 15px;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .action-buttons button {
+      width: 100%;
+      background-color: #00796b;
+      padding: 12px;
+    }
+    .action-buttons button:hover {
+      background-color: #00695c;
+    }
+    .action-buttons button:active {
+      background-color: #004d40;
+    }
 
-        .form-container, .sample-container, .notice-container {
-            background-color: #ffffff;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            width: 32%;
-            margin: 10px;
-            box-sizing: border-box;
-            overflow-y: auto;
-            max-height: 90vh;
-        }
-
-        .form-container {
-            order: 1;
-        }
-
-        .sample-container {
-            order: 2;
-        }
-
-        .notice-container {
-            order: 3;
-        }
-
-        h1 {
-            text-align: center;
-            color: #006064; /* Dark teal */
-            margin-bottom: 20px;
-        }
-
-        .gloucester-logo img {
-            display: block;
-            margin: 0 auto 10px auto;
-            width: 150px;
-            height: auto;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: #555;
-        }
-
-        input[type="text"], select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 2px solid #4dd0e1; /* Light blue */
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 5px;
-        }
-
-        button {
-            background-color: #00838f; /* Teal */
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 18px;
-            width: 100%;
-        }
-
-        .notice, .sample {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .notice-content, .sample-content {
-            border: 2px solid #000;
-            padding: 15px;
-            margin: 10px auto;
-            text-align: center;
-            width: 80mm;
-            box-sizing: border-box;
-        }
-
-        .notice-content h2, .sample-content h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .notice-content p, .sample-content p {
-            font-size: 16px;
-            margin: 5px 0;
-        }
-
-        .logo-img {
-            width: 150px;
-            margin-bottom: 10px;
-        }
-
-        .lock-img {
-            width: 50px;
-            margin-bottom: 15px;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-        }
-
-        .action-buttons button {
-            width: 100%;
-            background-color: #00796b; /* Darker teal */
-            padding: 12px;
-        }
-
-        .action-buttons button:hover {
-            background-color: #00695c;
-        }
-
-        .action-buttons button:active {
-            background-color: #004d40;
-        }
-
-        /* Print Styles */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            #noticePrintArea {
-                display: block !important;
-                visibility: visible;
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 80mm;
-                margin: 0;
-                padding: 0;
-            }
-
-            #noticePrintArea * {
-                visibility: visible;
-            }
-
-            .action-buttons {
-                display: none;
-            }
-        }
-    </style>
+    /* Print Styles */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #noticePrintArea {
+        display: block !important;
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 80mm;
+        margin: 0;
+        padding: 0;
+      }
+      #noticePrintArea * {
+        visibility: visible;
+      }
+      .action-buttons {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Suite Entry Notice Generator (Thermal Printer)</h1>
-    <div class="container">
-        <!-- Form Section -->
-        <div class="form-container">
-            <div class="gloucester-logo">
-                <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge">
-            </div>
-            <form id="noticeForm">
-                <!-- Form fields -->
-                <label for="suiteNumber">Suite Number:</label>
-                <input type="text" id="suiteNumber" placeholder="e.g., 1205">
+  <h1>Suite Entry Notice Generator (Thermal Printer)</h1>
 
-                <label>Person(s) who entered the suite:</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" name="personEntered" value="Security"> Security</label>
-                    <label><input type="checkbox" name="personEntered" value="Superintendent"> Superintendent</label>
-                    <label><input type="checkbox" name="personEntered" value="Management"> Management</label>
-                    <label><input type="checkbox" name="personEntered" value="Construction"> Construction</label>
-                    <label><input type="checkbox" name="personEntered" value="Other"> Other</label>
-                </div>
-                <select id="securityGuardSelect" style="display: none;">
-                    <option value="">Select Guard</option>
-                    <option value="Ajaypreet">Ajaypreet</option>
-                    <option value="Amritpal">Amritpal</option>
-                    <option value="Meet">Meet</option>
-                    <option value="Jatin">Jatin</option>
-                    <option value="Praveen">Praveen</option>
-                    <option value="Jashanpreet">Jashanpreet</option>
-                    <option value="Arnav">Arnav</option>
-                    <option value="Gurwinder">Gurwinder</option>
-                </select>
-                <input type="text" id="otherPerson" placeholder="Specify other" style="display: none;">
+  <div class="container">
+    <!-- Form Section -->
+    <div class="form-container">
+      <div class="gloucester-logo">
+        <img src="https://i.postimg.cc/HW76hBDq/Gloucester-Logo.jpg" alt="The Gloucester on Yonge">
+      </div>
+      
+      <!-- Removed the 'submit' so we can update in real-time -->
+      <form id="noticeForm" onsubmit="return false;">
+        <label for="suiteNumber">Suite Number:</label>
+        <input type="text" id="suiteNumber" placeholder="e.g., 1205">
 
-                <label for="entryPermission">Entry Type:</label>
-                <select id="entryPermission">
-                    <option value="">Select option</option>
-                    <option value="Resident Permission">Resident Permission</option>
-                    <option value="Emergency">Emergency</option>
-                    <option value="Scheduled Maintenance">Scheduled Maintenance</option>
-                </select>
-
-                <label for="natureOfVisit">Nature of Visit:</label>
-                <textarea id="natureOfVisit" rows="3" placeholder="Describe the nature of the visit..."></textarea>
-
-                <label>Options:</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" name="options" value="Work Completed"> Work Completed</label>
-                    <label><input type="checkbox" name="options" value="Work Pending"> Work Pending</label>
-                    <label><input type="checkbox" name="options" value="Please Contact Property Management"> Please Contact Property Management</label>
-                </div>
-
-                <button type="submit">Generate Notice</button>
-            </form>
+        <label>Person(s) who entered the suite:</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="personEntered" value="Security"> Security</label>
+          <label><input type="checkbox" name="personEntered" value="Superintendent"> Superintendent</label>
+          <label><input type="checkbox" name="personEntered" value="Management"> Management</label>
+          <label><input type="checkbox" name="personEntered" value="Construction"> Construction</label>
+          <label><input type="checkbox" name="personEntered" value="Other"> Other</label>
         </div>
 
-        <!-- Sample Preview Section -->
-        <div class="sample-container">
-            <h2>Sample Preview</h2>
-            <div id="samplePreview" class="sample">
-                <!-- Sample content will be inserted here -->
-            </div>
+        <!-- Security guard dropdown (hidden by default) -->
+        <select id="securityGuardSelect" style="display: none;">
+          <option value="">Select Guard</option>
+          <option value="Ajaypreet">Ajaypreet</option>
+          <option value="Amritpal">Amritpal</option>
+          <option value="Meet">Meet</option>
+          <option value="Jatin">Jatin</option>
+          <option value="Sourav">Sourav </option>
+          <option value="Jashanpreet">Jashanpreet</option>
+          <option value="Arnav">Arnav</option>
+          <option value="Gurwinder">Gurwinder</option>
+        </select>
+
+        <!-- Other personnel text field (hidden by default) -->
+        <input type="text" id="otherPerson" placeholder="Specify other" style="display: none;">
+
+        <label for="entryPermission">Entry Type:</label>
+        <select id="entryPermission">
+          <option value="">Select option</option>
+          <option value="Resident Permission">Resident Permission</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Scheduled Maintenance">Scheduled Maintenance</option>
+        </select>
+
+        <label for="natureOfVisit">Nature of Visit:</label>
+        <textarea id="natureOfVisit" rows="3" placeholder="Describe the nature of the visit..."></textarea>
+
+        <label>Options:</label>
+        <div class="checkbox-group">
+          <label><input type="checkbox" name="options" value="Work Completed"> Work Completed</label>
+          <label><input type="checkbox" name="options" value="Work Pending"> Work Pending</label>
+          <label><input type="checkbox" name="options" value="Please Contact Property Management"> Please Contact Property Management</label>
         </div>
 
-        <!-- Notice Preview Section -->
-        <div class="notice-container">
-            <h2>Notice to Print</h2>
-            <div id="noticePreview" class="notice">
-                <!-- Notice content will be inserted here -->
-            </div>
-            <div class="action-buttons">
-                <button id="printNotice">Print Notice</button>
-            </div>
-        </div>
+        <!-- We’ll keep this button to manually regenerate if you want, 
+             but the preview updates automatically. -->
+        <button id="generateButton">Generate Notice</button>
+      </form>
     </div>
 
-    <div id="noticePrintArea" style="display: none;"></div>
+    <!-- Sample Preview Section -->
+    <div class="sample-container">
+      <h2>Sample Preview</h2>
+      <div id="samplePreview" class="sample"></div>
+    </div>
 
-    <script>
-        document.querySelectorAll('input[name="personEntered"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const otherInput = document.getElementById('otherPerson');
-                const securitySelect = document.getElementById('securityGuardSelect');
+    <!-- Notice Preview Section -->
+    <div class="notice-container">
+      <h2>Notice to Print</h2>
+      <div id="noticePreview" class="notice"></div>
+      <div class="action-buttons">
+        <button id="printNotice">Print Notice</button>
+      </div>
+    </div>
+  </div>
 
-                otherInput.style.display = document.querySelector('input[name="personEntered"][value="Other"]').checked ? 'block' : 'none';
+  <!-- Hidden area for printing -->
+  <div id="noticePrintArea" style="display: none;"></div>
 
-                securitySelect.style.display = document.querySelector('input[name="personEntered"][value="Security"]').checked ? 'block' : 'none';
-            });
-        });
+  <script>
+    // Track final HTML to insert into print area.
+    let noticeHtmlContent = '';
 
-        // Initial sample notice content
-        let noticeHtmlContent = '';
-        let sampleHtmlContent = '';
+    // SAMPLE CONTENT: keeps the logo + lock icon to demonstrate the difference
+    function generateSample() {
+      const sampleHtmlContent = `
+        <div class="sample-content">
+          <img src="https://i.postimg.cc/HW76hBDq/Gloucester-Logo.jpg" alt="The Gloucester on Yonge" class="logo-img">
+          <h2>SUITE ENTRY NOTICE</h2>
+          <!-- Sample has the lock image, but we won't include it in the final notice -->
+          <img src="https://i.postimg.cc/HW76hBDq/Gloucester-Logo.jpg" alt="Lock Image" class="lock-img">
+          <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
+          <p><strong>Suite Number:</strong> _____</p>
+          <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
+          <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
+          <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
+          <p><strong>Options:</strong></p>
+          <p>☐ Work Completed</p>
+          <p>☐ Work Pending</p>
+          <p>☐ Please Contact Property Management</p>
+          <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
+        </div>
+      `;
+      document.getElementById('samplePreview').innerHTML = sampleHtmlContent;
+    }
 
-        function generateSample() {
-            sampleHtmlContent = `
-                <div class="sample-content">
-                    <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
-                    <h2>SUITE ENTRY NOTICE</h2>
-                    <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
-                    <p><strong>Date/Time:</strong> MM/DD/YYYY HH:MM AM/PM</p>
-                    <p><strong>Suite Number:</strong> _____</p>
-                    <p><strong>Person(s) who entered:</strong> Security (Guard Name), Superintendent</p>
-                    <p><strong>Entry Type:</strong> Scheduled Maintenance</p>
-                    <p><strong>Nature of Visit:</strong> Sample nature of visit</p>
-                    <p><strong>Options:</strong></p>
-                    <p>☐ Work Completed</p>
-                    <p>☐ Work Pending</p>
-                    <p>☐ Please Contact Property Management</p>
-                    <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
-                </div>
-            `;
-            document.getElementById('samplePreview').innerHTML = sampleHtmlContent;
+    // Generate the final notice HTML
+    function generateNotice() {
+      const suiteNumber = document.getElementById('suiteNumber').value.trim() || '_____';
+      const personsEnteredArray = Array.from(document.querySelectorAll('input[name="personEntered"]:checked'))
+        .map(checkbox => checkbox.value);
+      const otherPerson = document.getElementById('otherPerson').value.trim();
+      const securityGuard = document.getElementById('securityGuardSelect').value.trim();
+      const entryPermission = document.getElementById('entryPermission').value.trim() || '____________';
+      const natureOfVisit = document.getElementById('natureOfVisit').value.trim() || '____________';
+
+      // Build array of who entered
+      let personsEntered = [];
+
+      // If "Other" is checked
+      if (personsEnteredArray.includes('Other')) {
+        personsEntered.push(otherPerson ? otherPerson : '____________');
+      }
+      // If "Security" is checked
+      if (personsEnteredArray.includes('Security')) {
+        if (securityGuard) {
+          personsEntered.push(`Security (${securityGuard})`);
+        } else {
+          personsEntered.push('Security (____________)');
         }
-
-        document.getElementById('noticeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            generateNotice();
-        });
-
-        function generateNotice() {
-            const suiteNumber = document.getElementById('suiteNumber').value.trim() || '_____';
-            const personsEnteredArray = Array.from(document.querySelectorAll('input[name="personEntered"]:checked'))
-                .map(checkbox => checkbox.value);
-            const otherPerson = document.getElementById('otherPerson').value.trim();
-            const securityGuard = document.getElementById('securityGuardSelect').value.trim();
-            const entryPermission = document.getElementById('entryPermission').value.trim() || '____________';
-            const natureOfVisit = document.getElementById('natureOfVisit').value.trim() || '____________';
-
-            let personsEntered = [];
-            if (personsEnteredArray.includes('Other') && otherPerson) {
-                personsEntered.push(otherPerson);
-            } else if (personsEnteredArray.includes('Other')) {
-                personsEntered.push('____________');
-            }
-            if (personsEnteredArray.includes('Security') && securityGuard) {
-                personsEntered.push(`Security (${securityGuard})`);
-            } else if (personsEnteredArray.includes('Security')) {
-                personsEntered.push('Security (____________)');
-            }
-            personsEnteredArray.forEach(person => {
-                if (person !== 'Other' && person !== 'Security') {
-                    personsEntered.push(person);
-                }
-            });
-            if (personsEntered.length === 0) {
-                personsEntered.push('____________');
-            }
-
-            const optionsSelected = Array.from(document.querySelectorAll('input[name="options"]:checked'))
-                .map(option => option.value);
-
-            const optionsHtml = ['Work Completed', 'Work Pending', 'Please Contact Property Management'].map(option => {
-                if (optionsSelected.includes(option)) {
-                    return `<p>☑ ${option}</p>`;
-                } else {
-                    return `<p>☐ ${option}</p>`;
-                }
-            }).join('');
-
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleDateString();
-            const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            noticeHtmlContent = `
-                <div class="notice-content">
-                    <img src="https://i.imgur.com/LmweghF.png" alt="The Gloucester on Yonge" class="logo-img">
-                    <h2>SUITE ENTRY NOTICE</h2>
-                    <img src="https://i.imgur.com/7O6EOHU.png" alt="Lock Image" class="lock-img">
-                    <p><strong>Date/Time:</strong> ${formattedDate} ${formattedTime}</p>
-                    <p><strong>Suite Number:</strong> ${suiteNumber}</p>
-                    <p><strong>Person(s) who entered:</strong> ${personsEntered.join(', ')}</p>
-                    <p><strong>Entry Type:</strong> ${entryPermission}</p>
-                    <p><strong>Nature of Visit:</strong> ${natureOfVisit}</p>
-                    <p><strong>Options:</strong></p>
-                    ${optionsHtml}
-                    <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
-                </div>
-            `;
-
-            document.getElementById('noticePreview').innerHTML = noticeHtmlContent;
+      }
+      // If any others are checked (Superintendent, Management, etc.)
+      personsEnteredArray.forEach(person => {
+        if (person !== 'Other' && person !== 'Security') {
+          personsEntered.push(person);
         }
+      });
 
-        document.getElementById('printNotice').addEventListener('click', function () {
-            preparePrint();
-            window.print();
+      // If no one is selected
+      if (personsEntered.length === 0) {
+        personsEntered.push('____________');
+      }
+
+      // Check which options are selected
+      const optionsSelected = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+        .map(option => option.value);
+
+      // Build each option with checkbox
+      const optionsHtml = ['Work Completed', 'Work Pending', 'Please Contact Property Management'].map(opt => {
+        return optionsSelected.includes(opt) ? `<p>☑ ${opt}</p>` : `<p>☐ ${opt}</p>`;
+      }).join('');
+
+      // Format current date/time
+      const now = new Date();
+      const dateStr = now.toLocaleDateString();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // NOTE: We are removing the lock icon from the final notice to avoid duplication
+      noticeHtmlContent = `
+        <div class="notice-content">
+          <img src="https://i.postimg.cc/HW76hBDq/Gloucester-Logo.jpg" alt="The Gloucester on Yonge" class="logo-img">
+          <h2>SUITE ENTRY NOTICE</h2>
+          <p><strong>Date/Time:</strong> ${dateStr} ${timeStr}</p>
+          <p><strong>Suite Number:</strong> ${suiteNumber}</p>
+          <p><strong>Person(s) who entered:</strong> ${personsEntered.join(', ')}</p>
+          <p><strong>Entry Type:</strong> ${entryPermission}</p>
+          <p><strong>Nature of Visit:</strong> ${natureOfVisit}</p>
+          <p><strong>Options:</strong></p>
+          ${optionsHtml}
+          <p class="notice-footer">Questions? Contact Property Management: 647-368-7395</p>
+        </div>
+      `;
+
+      document.getElementById('noticePreview').innerHTML = noticeHtmlContent;
+    }
+
+    // Show/hide guard & other-person fields based on checkboxes
+    function togglePersonFields() {
+      const otherChecked = document.querySelector('input[name="personEntered"][value="Other"]').checked;
+      const securityChecked = document.querySelector('input[name="personEntered"][value="Security"]').checked;
+      document.getElementById('otherPerson').style.display = otherChecked ? 'block' : 'none';
+      document.getElementById('securityGuardSelect').style.display = securityChecked ? 'block' : 'none';
+    }
+
+    // Add event listeners to all form elements so we update the preview in real-time
+    Array.from(document.querySelectorAll('#noticeForm input, #noticeForm select, #noticeForm textarea'))
+      .forEach(el => {
+        el.addEventListener('input', () => {
+          togglePersonFields();
+          generateNotice();
         });
+      });
 
-        function preparePrint() {
-            const noticePrintArea = document.getElementById('noticePrintArea');
-            noticePrintArea.innerHTML = noticeHtmlContent;
+    // If user presses the "Generate Notice" button (optional extra click)
+    document.getElementById('generateButton').addEventListener('click', (e) => {
+      e.preventDefault();
+      generateNotice();
+    });
 
-            // Ensure the print area is visible before printing
-            noticePrintArea.style.display = 'block';
-        }
+    // Print logic
+    document.getElementById('printNotice').addEventListener('click', function() {
+      const printArea = document.getElementById('noticePrintArea');
+      printArea.innerHTML = noticeHtmlContent;
+      printArea.style.display = 'block';
+      window.print();
+    });
+    window.onafterprint = function() {
+      document.getElementById('noticePrintArea').style.display = 'none';
+    };
 
-        // Hide the print area after printing
-        window.onafterprint = function() {
-            document.getElementById('noticePrintArea').style.display = 'none';
-        };
-
-        // Initialize with sample content
-        generateSample();
-    </script>
+    // Initialize on page load
+    generateSample();   // Fills in the sample preview
+    togglePersonFields(); // Ensures fields are correctly hidden at start
+    generateNotice();   // Renders an initial final notice
+  </script>
 </body>
 </html>
