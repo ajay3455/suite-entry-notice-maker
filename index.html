@@ -47,7 +47,7 @@ h3#bldg{
 /* ---------- layout ---------- */
 .grid{
   display:grid;
-  grid-template-columns:38% 58%;
+  grid-template-columns:38% 58%; /* Default for larger screens */
   gap:3vw;
   width:96vw;
   max-width:1080px;
@@ -71,11 +71,11 @@ h3#bldg{
 }
 
 /* ---------- form controls ---------- */
-label{font-weight:600;font-size:.95rem}
+label{font-weight:600;font-size:.95rem; display: block; margin-bottom: 4px;} /* Ensure label is block for spacing */
 input,select,textarea{
   width:100%;
   padding:10px 12px;
-  margin:0 0 16px;
+  margin:0 0 16px; /* Original margin-bottom */
   font-size:1rem;
   border:1px solid var(--border);
   border-radius:9px;
@@ -96,23 +96,30 @@ textarea{resize:vertical;min-height:52px}
   gap:10px 13px;
   margin:0 0 16px;
 }
-.row label{
-  display:flex;
+.row label{ /* Labels within .row are inline-flex for the pill style */
+  display:flex; /* Changed from inline-flex to flex for consistency */
   align-items:center;
   font-size:.92rem;
-  padding:5px 10px;
+  padding:5px 10px; /* Default padding */
   border:1px solid var(--border);
   border-radius:12px;
   background:#f4fbfc;
   cursor:pointer;
+  font-weight:normal; /* Override general label bolding if needed for pills */
+  margin-bottom: 0; /* Override general label margin-bottom */
 }
-.row input{margin-right:6px;accent-color:var(--accent)}
+.row input{
+  margin-right:6px;
+  accent-color:var(--accent);
+  width: auto; /* Override general input width for checkboxes */
+  margin-bottom: 0; /* Override general input margin for checkboxes */
+}
 
 /* print button */
 button#printBtn{
   margin-top:22px;
   align-self:center;
-  width:230px;
+  width:230px; /* Default width */
   max-width:100%;
   display:flex;
   align-items:center;
@@ -135,12 +142,12 @@ button#printBtn:hover{filter:brightness(.92)}
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  min-height:100%;
+  min-height:100%; /* Will be auto in mobile */
 }
 .notice{
   box-sizing:border-box;          /* border included in width */
-  width:var(--w);
-  min-width:230px;
+  width:var(--w); /* Default width for desktop (80mm) */
+  min-width:230px; /* Minimum width */
   border:2px solid #000;
   background:#fff;
   color:#000;
@@ -190,17 +197,123 @@ button#printBtn:hover{filter:brightness(.92)}
 }
 
 /* ---------- responsive ---------- */
-@media(max-width:900px){
-  .grid{grid-template-columns:1fr}
-  .notice{width:94vw}
+@media(max-width:900px){ /* Styles for tablets and larger mobile phones */
+  .grid{
+    grid-template-columns:1fr; /* Stack cards vertically */
+    gap: 20px; /* Adjust gap for stacked layout */
+  }
+  .notice{
+    width: 100%; /* Occupy full width of its container (.previewWrap) */
+    /* min-width: 230px; from base styles is still respected */
+    /* margin: 0 auto; /* Removed as not needed for width 100% and parent handles centering via padding */
+  }
+  h1 {
+    font-size: 1.7rem; /* Adjust heading font size */
+    margin-top: 20px;
+    margin-bottom: 5px;
+  }
+  h3#bldg {
+    font-size: 0.95rem; /* Adjust subheading font size */
+    margin-bottom: 20px;
+  }
+  .card {
+    padding: 20px; /* Adjust card padding */
+  }
+  .card h2 {
+    font-size: 1.05rem; /* Adjust card title font size */
+    margin-bottom: 15px;
+  }
+  label { /* General labels */
+    font-size: 0.9rem; /* Adjust label font size */
+  }
+  input, select, textarea { /* General inputs */
+    padding: 12px 10px; /* Increase padding for easier interaction */
+    font-size: 0.95rem; /* Adjust input font size */
+    margin-bottom: 15px; /* Adjust spacing */
+  }
+  .row { /* Container for checkbox pills */
+    gap: 8px 10px; /* Adjust gap in checkbox rows */
+    margin-bottom: 15px; /* Adjust spacing */
+  }
+  .row label { /* Labels for checkbox pills */
+    padding: 10px 12px; /* Increase padding for better touch targets */
+    font-size: 0.9rem; /* Adjust font size within pills */
+    border-radius: 10px; /* Slightly adjust border radius */
+  }
+  button#printBtn {
+    padding: 14px; /* Increase button padding */
+    font-size: 1rem; /* Adjust button font size */
+    width: 100%; /* Make button full-width */
+    margin-top: 20px; /* Adjust top margin */
+  }
+  .previewWrap {
+    min-height: auto; /* Allow preview wrap to shrink if needed */
+  }
 }
+
+@media(max-width:480px){ /* Styles for smaller mobile phones */
+  h1 {
+    font-size: 1.5rem;
+    margin-top: 15px;
+  }
+  h3#bldg {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  .card {
+    padding: 15px; /* Further reduce card padding */
+    border-radius: 12px;
+  }
+  .card h2 {
+    font-size: 1rem;
+  }
+  input, select, textarea { /* General inputs */
+    padding: 10px 8px;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+   .row label { /* Labels for checkbox pills */
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  button#printBtn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+  .notice {
+    font-size: 0.9rem; /* Adjust font size inside the notice for very small screens */
+  }
+  .notice .title {
+    font-size: 1.1rem; /* Adjust title font size in notice */
+  }
+}
+
 
 /* ---------- print ---------- */
 @media print{
   @page{size:var(--w) auto;margin:0}
   body{background:#fff;color:#000}
   h1,#bldg,.card.form,button#printBtn,.card h2{display:none!important}
-  #noticeBox{border:none;width:var(--w);margin:0}
+  /* Ensure the notice box itself is not hidden */
+  .grid, .card { /* Reset display properties for print if they were changed for screen */
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .previewWrap {
+    display: block !important; /* Ensure previewWrap is visible */
+    align-items: flex-start; /* Flex property, may not be relevant if display is block */
+  }
+  #noticeBox{ /* This is the .notice element */
+    border:2px solid #000 !important; /* Ensure border is visible for print */
+    width:var(--w) !important;
+    min-width: var(--w) !important; /* Ensures it's at least target print width */
+    margin:0 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid; /* Try to keep notice on one page */
+  }
 }
 </style>
 </head>
@@ -211,11 +324,10 @@ button#printBtn:hover{filter:brightness(.92)}
 <h3 id="bldg">The Gloucester on Yonge</h3>
 
 <div class="grid">
-  <!-- ========== form column ========== -->
   <div class="card form">
     <h2>Fill Notice Details</h2>
 
-    <label>Suite Number</label>
+    <label for="suite">Suite Number</label>
     <input id="suite">
 
     <label>Person(s) who entered</label>
@@ -227,7 +339,7 @@ button#printBtn:hover{filter:brightness(.92)}
       <label><input type="checkbox" value="Other">Other</label>
     </div>
 
-    <select id="guard" style="display:none">
+    <select id="guard" style="display:none" aria-label="Select guard">
       <option value="">Select guard</option>
       <option>Ajaypreet Singh – Concierge supervisor</option>
       <option>Amritpal Kaur – Weekday Day Patrol</option>
@@ -240,9 +352,9 @@ button#printBtn:hover{filter:brightness(.92)}
       <option>Praveen Kumar Mathad – Weekend Night Patrol</option>
     </select>
 
-    <input id="other" placeholder="Specify other" style="display:none">
+    <input id="other" placeholder="Specify other" style="display:none" aria-label="Specify other person">
 
-    <label>Entry Type</label>
+    <label for="entry">Entry Type</label>
     <select id="entry">
       <option value="">Select</option>
       <option>Resident Permission</option>
@@ -250,7 +362,7 @@ button#printBtn:hover{filter:brightness(.92)}
       <option>Scheduled Maintenance</option>
     </select>
 
-    <label>Nature of Visit</label>
+    <label for="nature">Nature of Visit</label>
     <textarea id="nature"></textarea>
 
     <label>Options</label>
@@ -261,79 +373,108 @@ button#printBtn:hover{filter:brightness(.92)}
     </div>
   </div>
 
-  <!-- ========== preview & print column ========== -->
-  <div class="card">
-    <h2>Notice to Print</h2>
+  <div class="card"> <h2>Notice to Print</h2>
 
     <div class="previewWrap">
-      <div id="noticeBox" class="notice"></div>
-    </div>
+      <div id="noticeBox" class="notice"></div> </div>
 
-    <button id="printBtn">🖨️ Print Notice</button>
+    <button id="printBtn" type="button">🖨️ Print Notice</button>
   </div>
 </div>
 
 <script>
+// Helper function to select a single element
 const $ = s => document.querySelector(s);
+// Helper function to select multiple elements and return as an array
 const $$ = s => Array.from(document.querySelectorAll(s));
 
-const suite  = $('#suite'),
-      entry  = $('#entry'),
-      nature = $('#nature'),
-      guard  = $('#guard'),
-      other  = $('#other');
+// Get references to form elements
+const suiteInput  = $('#suite');
+const entrySelect = $('#entry');
+const natureTextarea = $('#nature');
+const guardSelect  = $('#guard');
+const otherInput  = $('#other');
 
-const pCB = $$('#pRow input'),
-      oCB = $$('#oRow input');
+// Get references to checkbox groups
+const personCheckboxes = $$('#pRow input');
+const optionCheckboxes = $$('#oRow input');
 
-/* show / hide guard & other boxes */
-function toggleExtra(){
-  guard.style.display = pCB.find(c => c.value === 'Security' && c.checked) ? 'block' : 'none';
-  other.style.display = pCB.find(c => c.value === 'Other'    && c.checked) ? 'block' : 'none';
+/**
+ * Toggles the visibility of the guard selection and 'other' input field
+ * based on whether 'Security' or 'Other' checkboxes are checked.
+ */
+function toggleExtraPersonFields(){
+  // Show guard select if 'Security' is checked, hide otherwise
+  guardSelect.style.display = personCheckboxes.find(cb => cb.value === 'Security' && cb.checked) ? 'block' : 'none';
+  // Show 'other' input if 'Other' is checked, hide otherwise
+  otherInput.style.display = personCheckboxes.find(cb => cb.value === 'Other'    && cb.checked) ? 'block' : 'none';
 }
 
-/* build option chips */
-function chips(){
-  return oCB.map(cb => `<span class="chip">${cb.checked ? '☑' : '☐'} ${cb.value}</span>`).join('');
+/**
+ * Builds the HTML for the option chips (checkboxes with status).
+ * @returns {string} HTML string for the chips.
+ */
+function buildOptionChips(){
+  return optionCheckboxes.map(cb => {
+    // Use a more distinct checkmark for checked items
+    const checkboxState = cb.checked ? '☑' : '☐';
+    return `<span class="chip">${checkboxState} ${cb.value}</span>`;
+  }).join('');
 }
 
-/* build notice preview */
-function build(){
+/**
+ * Builds and updates the notice preview HTML content based on form inputs.
+ */
+function buildNoticePreview(){
+  // Get current date and time, formatted for Canada
   const when = new Date().toLocaleString('en-CA',{dateStyle:'medium',timeStyle:'short'});
 
-  const who = [];
-  pCB.forEach(c=>{
-    if(!c.checked) return;
-    if(c.value==='Security')   who.push(guard.value || 'Security (____)');
-    else if(c.value==='Other') who.push(other.value || 'Other (____)');
-    else                       who.push(c.value);
+  // Collect names of persons who entered
+  const whoEntered = [];
+  personCheckboxes.forEach(cb => {
+    if(!cb.checked) return; // Skip if not checked
+    if(cb.value === 'Security') {
+      whoEntered.push(guardSelect.value || 'Security (Specify Name)'); // Prompt if guard not selected
+    } else if (cb.value === 'Other') {
+      whoEntered.push(otherInput.value || 'Other (Specify Details)'); // Prompt if other details not provided
+    } else {
+      whoEntered.push(cb.value);
+    }
   });
-  if(!who.length) who.push('____');
+  // If no one is selected, provide a placeholder
+  if(!whoEntered.length) whoEntered.push('____ (Specify Person)');
 
+  // Populate the notice box with the collected data
+  // The element with id="noticeBox" is also the one with class="notice"
   $('#noticeBox').innerHTML = `
     <div class="bldg">The Gloucester on Yonge</div>
     <div class="title">SUITE ENTRY NOTICE</div>
 
     <div class="sec"><div class="lab">Date/Time</div><div class="val">${when}</div></div>
-    <div class="sec"><div class="lab">Suite Number</div><div class="val">${suite.value || '____'}</div></div>
-    <div class="sec"><div class="lab">Person(s) Who Entered</div><div class="val">${who.join(', ')}</div></div>
-    <div class="sec"><div class="lab">Entry Type</div><div class="val">${entry.value || '____'}</div></div>
-    <div class="sec"><div class="lab">Nature of Visit</div><div class="val">${nature.value || '____'}</div></div>
-    <div class="sec"><div class="lab">Options</div><div class="chips">${chips()}</div></div>
+    <div class="sec"><div class="lab">Suite Number</div><div class="val">${suiteInput.value || '____'}</div></div>
+    <div class="sec"><div class="lab">Person(s) Who Entered</div><div class="val">${whoEntered.join(', ')}</div></div>
+    <div class="sec"><div class="lab">Entry Type</div><div class="val">${entrySelect.value || '____'}</div></div>
+    <div class="sec"><div class="lab">Nature of Visit</div><div class="val">${natureTextarea.value.trim() || '____'}</div></div>
+    <div class="sec"><div class="lab">Options</div><div class="chips">${buildOptionChips()}</div></div>
 
     <div class="footer">Questions? Call Property Management<br>647‑368‑7395</div>`;
 }
 
-/* listeners */
-[ suite,entry,nature,guard,other ].forEach(el => el.addEventListener('input',build));
-[ ...pCB, ...oCB ].forEach(cb => cb.addEventListener('change', () => { toggleExtra(); build(); }));
+// Add event listeners to all relevant form elements to update preview on input/change
+[ suiteInput, entrySelect, natureTextarea, guardSelect, otherInput ].forEach(el => el.addEventListener('input', buildNoticePreview));
+[ ...personCheckboxes, ...optionCheckboxes ].forEach(cb => cb.addEventListener('change', () => {
+  toggleExtraPersonFields(); // Update visibility of extra fields
+  buildNoticePreview();      // Rebuild notice on change
+}));
 
-/* initial render */
-toggleExtra();
-build();
+// Initial setup when the page loads
+toggleExtraPersonFields(); // Set initial visibility of guard/other fields
+buildNoticePreview();      // Build the initial notice preview
 
-/* print button */
-$('#printBtn').addEventListener('click', () => window.print());
+// Add event listener for the print button
+$('#printBtn').addEventListener('click', () => {
+  window.print(); // Trigger the browser's print dialog
+});
 </script>
 </body>
 </html>
